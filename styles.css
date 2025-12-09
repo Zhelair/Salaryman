@@ -27,14 +27,14 @@ h1 {
   margin-bottom: 10px;
 }
 
-/* 🔹 GameBoy-style shell around game + controller */
+/* GameBoy-style shell around game + controller */
 #game-shell {
   position: relative;
   margin: 0 auto;
   width: 100%;
   max-width: 480px;
 
-  padding: 12px 12px 96px; /* extra bottom space for controller */
+  padding: 12px 12px 140px; /* extra bottom space for BIG controller */
   border-radius: 16px;
   border: 3px solid #3a3a3a;
   background: #151c26;
@@ -53,15 +53,15 @@ h1 {
   background: #000;
 }
 
-/* 🔹 Controller is fixed inside the shell, bottom center */
+/* Controller fixed inside shell, bottom center */
 #mobile-controls {
   position: absolute;
   left: 50%;
-  bottom: 10px;
+  bottom: 12px;
   transform: translateX(-50%);
   display: inline-block;
-  padding: 6px 10px;
-  border-radius: 999px;
+  padding: 10px 14px;
+  border-radius: 24px;
   background: #202733;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
@@ -72,18 +72,27 @@ h1 {
   align-items: center;
 }
 
-.ctrl-spacer {
-  width: 48px;
-  height: 48px;
+/* extra spacing between rows so Up/Down aren't glued */
+.ctrl-row-top {
+  margin-bottom: 10px;
 }
 
+.ctrl-row-middle {
+  margin-bottom: 10px;
+}
+
+.ctrl-row-bottom {
+  margin-top: 0;
+}
+
+/* BIGGER buttons */
 .ctrl-btn {
-  width: 48px;
-  height: 48px;
-  margin: 2px;
-  font-size: 1.4rem;
+  width: 64px;
+  height: 64px;
+  margin: 0 6px;
+  font-size: 1.6rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 14px;
   background: #1e88e5;
   color: #fff;
   cursor: pointer;
@@ -143,15 +152,15 @@ button:active {
   color: #b0bec5;
 }
 
-/* Slightly smaller shell on very narrow phones */
+/* Slightly smaller shell + buttons on tiny phones */
 @media (max-width: 400px) {
   #game-shell {
-    padding: 8px 8px 90px;
+    padding: 8px 8px 130px;
   }
 
-  .ctrl-btn,
-  .ctrl-spacer {
-    width: 42px;
-    height: 42px;
+  .ctrl-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 1.4rem;
   }
 }
