@@ -11,21 +11,21 @@
   <div id="game-container">
     <h1>Corporate Lolo (Prototype)</h1>
 
-    <!-- 🔹 GameBoy-style shell -->
+    <!-- GameBoy-style shell -->
     <div id="game-shell">
       <canvas id="gameCanvas" width="480" height="352"></canvas>
 
-      <!-- 🔹 Integrated controller (always visible, phone + laptop) -->
+      <!-- 🔹 New, more ergonomic controller -->
       <div id="mobile-controls">
-        <div class="ctrl-row">
-          <span class="ctrl-spacer"></span>
+        <div class="ctrl-row ctrl-row-top">
           <button class="ctrl-btn" data-dir="up">▲</button>
-          <span class="ctrl-spacer"></span>
         </div>
-        <div class="ctrl-row">
+        <div class="ctrl-row ctrl-row-middle">
           <button class="ctrl-btn" data-dir="left">◀</button>
-          <button class="ctrl-btn" data-dir="down">▼</button>
           <button class="ctrl-btn" data-dir="right">▶</button>
+        </div>
+        <div class="ctrl-row ctrl-row-bottom">
+          <button class="ctrl-btn" data-dir="down">▼</button>
         </div>
       </div>
     </div>
