@@ -51,14 +51,22 @@ h1 {
 }
 
 #message {
-  min-height: 24px;
+  /* fixed height so layout doesn't jump */
+  min-height: 40px;
+  max-height: 40px;
+  overflow: hidden;
+
   padding: 4px 8px;
   font-size: 0.85rem;
   color: #ffeb99;
 }
 
 #status {
+  /* fixed height for the status line too */
   min-height: 20px;
+  max-height: 20px;
+  overflow: hidden;
+
   font-size: 0.8rem;
   color: #b2ff59;
 }
