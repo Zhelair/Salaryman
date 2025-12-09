@@ -11,8 +11,24 @@
   <div id="game-container">
     <h1>Corporate Lolo (Prototype)</h1>
 
-    <canvas id="gameCanvas" width="480" height="352"></canvas>
-    <!-- 15 x 11 tiles, 32px each -->
+    <!-- 🔹 GameBoy-style shell -->
+    <div id="game-shell">
+      <canvas id="gameCanvas" width="480" height="352"></canvas>
+
+      <!-- 🔹 Integrated controller (always visible, phone + laptop) -->
+      <div id="mobile-controls">
+        <div class="ctrl-row">
+          <span class="ctrl-spacer"></span>
+          <button class="ctrl-btn" data-dir="up">▲</button>
+          <span class="ctrl-spacer"></span>
+        </div>
+        <div class="ctrl-row">
+          <button class="ctrl-btn" data-dir="left">◀</button>
+          <button class="ctrl-btn" data-dir="down">▼</button>
+          <button class="ctrl-btn" data-dir="right">▶</button>
+        </div>
+      </div>
+    </div>
 
     <div id="ui">
       <div id="message"></div>
@@ -20,19 +36,9 @@
       <button id="restartBtn">Restart</button>
     </div>
 
-    <div id="mobile-controls">
-      <div class="row">
-        <button class="ctrl-btn" data-dir="up">▲</button>
-      </div>
-      <div class="row">
-        <button class="ctrl-btn" data-dir="left">◀</button>
-        <button class="ctrl-btn" data-dir="down">▼</button>
-        <button class="ctrl-btn" data-dir="right">▶</button>
-      </div>
-    </div>
-
     <p class="hint">
-      PC: Use arrow keys. &nbsp; Mobile: use on-screen buttons.<br />
+      PC: Use arrow keys or on-screen buttons. &nbsp;
+      Mobile: use on-screen buttons.<br />
       Collect all keys, then reach the exit door. Avoid HR.
     </p>
   </div>
