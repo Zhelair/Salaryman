@@ -2,6 +2,7 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 const messageEl = document.getElementById("message");
+const statusEl = document.getElementById("status");
 const restartBtn = document.getElementById("restartBtn");
 const ctrlButtons = document.querySelectorAll(".ctrl-btn");
 
@@ -26,7 +27,8 @@ let keysCollected;
 let messageTimeoutId = null;
 
 let enemyStepCounter = 0;
-const ENEMY_STEP_FRAMES = 24; // how often enemies move
+// 🔹 HR less “hot”: move less often
+const ENEMY_STEP_FRAMES = 40;
 
 // Simple prototype level, Lolo-ish layout
 // # = wall, P = player, B = block, K = key, D = door, E = enemy
@@ -44,6 +46,50 @@ const rawMap = [
   "###############",
 ];
 
+// 🔹 Corporate one-liner sets
+function rand(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+const START_MESSAGES = [
+  "Welcome to the performance maze. KPI #1: don't get fired.",
+  "New quarter started. Objective: exit the office alive.",
+  "Corporate says: 'Think outside the cubicle.' Try to escape it first."
+];
+
+const KEY_MESSAGES = [
+  "You collected a key. Completion rate +10%.",
+  "Key acquired. Your KPI dashboard is impressed.",
+  "New access granted. Please pretend you read the policy."
+];
+
+const ALL_KEYS_MESSAGES = [
+  "All objectives completed. Exit interview unlocked.",
+  "All keys collected. Performance review door is now open.",
+  "Checklist: 100% done. Time to find the nearest exit."
+];
+
+const DOOR_LOCKED_MESSAGES = [
+  "Door is locked. Corporate says: 'Not all deliverables are ready.'",
+  "Access denied. Your KPI is still 'in progress'.",
+  "Exit unavailable. Please finish all mandatory tasks first."
+];
+
+const DEATH_MESSAGES = [
+  "Your KPI report: 'needs improvement'. Try the quarter again.",
+  "You missed the deadline. System is rolling back the sprint.",
+  "HR scheduled a 'development talk'. It didn't end well.",
+  "Performance rating: 'below expectations'. Respawn recommended.",
+  "You stepped into a surprise audit. Please reattempt compliance."
+];
+
+const WIN_MESSAGES = [
+  "Quarter closed successfully. Your bonus: another level.",
+  "You survived this sprint. Title updated to 'Still Employed'.",
+  "Performance rating: 'barely meets expectations', but you're alive.",
+  "Corporate congratulates you with a generic email. You escaped!"
+];
+
 function showMessage(text, duration = 2500) {
   messageEl.textContent = text;
   if (messageTimeoutId) clearTimeout(messageTimeoutId);
@@ -52,6 +98,10 @@ function showMessage(text, duration = 2500) {
       messageEl.textContent = "";
     }, duration);
   }
+}
+
+function updateStatus() {
+  statusEl.textContent = `Keys: ${keysCollected}/${totalKeys}`;
 }
 
 function resetLevel() {
@@ -90,7 +140,8 @@ function resetLevel() {
     }
   }
 
-  showMessage("Welcome to the corporate maze. Collect all keys!", 3000);
+  updateStatus();
+  showMessage(rand(START_MESSAGES), 3000);
 }
 
 function isInsideGrid(x, y) {
@@ -128,7 +179,7 @@ function tryMovePlayer(dx, dy) {
 
   // Enemy on target tile?
   if (isEnemyAt(targetX, targetY)) {
-    handleDeath("HR has invited you to a performance review.");
+    handleDeath();
     return;
   }
 
@@ -137,7 +188,7 @@ function tryMovePlayer(dx, dy) {
     if (door.open) {
       handleWin();
     } else {
-      showMessage("The exit is locked. HR still has questions.");
+      showMessage(rand(DOOR_LOCKED_MESSAGES));
     }
     return;
   }
@@ -170,23 +221,24 @@ function tryMovePlayer(dx, dy) {
   if (key && !key.collected) {
     key.collected = true;
     keysCollected++;
-    showMessage("You found a key to the HR archives!");
+    updateStatus();
+    showMessage(rand(KEY_MESSAGES));
 
     if (keysCollected === totalKeys) {
       door.open = true;
-      showMessage("All keys collected. The exit is unlocked!", 3000);
+      showMessage(rand(ALL_KEYS_MESSAGES), 3000);
     }
   }
 }
 
-function handleDeath(msg) {
-  showMessage(msg + " Attempt again.", 3500);
+function handleDeath() {
+  showMessage(rand(DEATH_MESSAGES), 3500);
   // small delay so player sees where they died
   setTimeout(resetLevel, 400);
 }
 
 function handleWin() {
-  showMessage("You survived this quarter. Promotion: 'Still Employed'.", 4000);
+  showMessage(rand(WIN_MESSAGES), 4000);
   // For now just reset same level
   setTimeout(resetLevel, 1200);
 }
@@ -204,7 +256,7 @@ function moveEnemies() {
 
     // Check collision with player
     if (e.x === player.x && e.y === player.y) {
-      handleDeath("You were called into a surprise HR meeting.");
+      handleDeath();
     }
   });
 }
