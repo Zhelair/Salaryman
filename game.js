@@ -4,7 +4,18 @@ const ctx = canvas.getContext("2d");
 const messageEl = document.getElementById("message");
 const statusEl = document.getElementById("status");
 const restartBtn = document.getElementById("restartBtn");
+const mobileControlsContainer = document.getElementById("mobile-controls");
 const ctrlButtons = document.querySelectorAll(".ctrl-btn");
+
+// Detect touch device – hide pad on PC/laptop
+const isTouch =
+  "ontouchstart" in window ||
+  navigator.maxTouchPoints > 0 ||
+  navigator.msMaxTouchPoints > 0;
+
+if (!isTouch && mobileControlsContainer) {
+  mobileControlsContainer.style.display = "none";
+}
 
 // Basic NES-style grid
 const TILE_SIZE = 32;
@@ -27,10 +38,10 @@ let keysCollected;
 let messageTimeoutId = null;
 
 let enemyStepCounter = 0;
-// 🔹 HR less “hot”: move less often
+// HR moves less often (slower patrol)
 const ENEMY_STEP_FRAMES = 40;
 
-// Simple prototype level, Lolo-ish layout
+// Level layout
 // # = wall, P = player, B = block, K = key, D = door, E = enemy
 const rawMap = [
   "###############",
@@ -46,7 +57,8 @@ const rawMap = [
   "###############",
 ];
 
-// 🔹 Corporate one-liner sets
+// --- Corporate one-liners ---
+
 function rand(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -90,6 +102,8 @@ const WIN_MESSAGES = [
   "Corporate congratulates you with a generic email. You escaped!"
 ];
 
+// --- UI helpers ---
+
 function showMessage(text, duration = 6500) {
   // default ~6.5 seconds
   messageEl.textContent = text;
@@ -102,9 +116,10 @@ function showMessage(text, duration = 6500) {
 }
 
 function updateStatus() {
-  // clearer label
   statusEl.textContent = `Keys collected: ${keysCollected}/${totalKeys}`;
 }
+
+// --- Level setup ---
 
 function resetLevel() {
   tiles = [];
@@ -143,9 +158,10 @@ function resetLevel() {
   }
 
   updateStatus();
-  // ~7 seconds intro message
   showMessage(rand(START_MESSAGES), 7000);
 }
+
+// --- Helpers ---
 
 function isInsideGrid(x, y) {
   return x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT;
@@ -173,6 +189,8 @@ function isBlockingTile(x, y) {
   if (findBlockAt(x, y)) return true;
   return false;
 }
+
+// --- Player movement ---
 
 function tryMovePlayer(dx, dy) {
   const targetX = player.x + dx;
@@ -225,7 +243,7 @@ function tryMovePlayer(dx, dy) {
     key.collected = true;
     keysCollected++;
     updateStatus();
-    showMessage(rand(KEY_MESSAGES)); // defaults to ~6.5 sec
+    showMessage(rand(KEY_MESSAGES));
 
     if (keysCollected === totalKeys) {
       door.open = true;
@@ -234,17 +252,19 @@ function tryMovePlayer(dx, dy) {
   }
 }
 
+// --- Outcomes ---
+
 function handleDeath() {
   showMessage(rand(DEATH_MESSAGES), 7500);
-  // small delay so player sees where they died
   setTimeout(resetLevel, 400);
 }
 
 function handleWin() {
   showMessage(rand(WIN_MESSAGES), 8000);
-  // For now just reset same level
   setTimeout(resetLevel, 1200);
 }
+
+// --- Enemy movement ---
 
 function moveEnemies() {
   enemies.forEach((e) => {
@@ -257,26 +277,27 @@ function moveEnemies() {
       e.x = nextX;
     }
 
-    // Check collision with player
+    // Collision with player
     if (e.x === player.x && e.y === player.y) {
       handleDeath();
     }
   });
 }
 
-// Drawing
+// --- Drawing ---
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Background / tiles
+  // Tiles
   for (let y = 0; y < GRID_HEIGHT; y++) {
     for (let x = 0; x < GRID_WIDTH; x++) {
       const tile = tiles[y][x];
 
       if (tile === TILE.FLOOR) {
-        ctx.fillStyle = "#1b2838"; // floor
+        ctx.fillStyle = "#1b2838";
       } else if (tile === TILE.WALL) {
-        ctx.fillStyle = "#3b4a5a"; // walls
+        ctx.fillStyle = "#3b4a5a";
       }
 
       ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -328,7 +349,7 @@ function draw() {
     );
   });
 
-  // Player (little salaryman hero)
+  // Player
   ctx.fillStyle = "#00e5ff";
   ctx.fillRect(
     player.x * TILE_SIZE + 6,
@@ -337,7 +358,7 @@ function draw() {
     TILE_SIZE - 8
   );
 
-  // tiny "head"
+  // Head
   ctx.fillStyle = "#e0f7fa";
   ctx.fillRect(
     player.x * TILE_SIZE + 10,
@@ -347,7 +368,8 @@ function draw() {
   );
 }
 
-// Game loop
+// --- Game loop ---
+
 function gameLoop() {
   enemyStepCounter++;
   if (enemyStepCounter >= ENEMY_STEP_FRAMES) {
@@ -359,7 +381,8 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-// Controls
+// --- Controls ---
+
 document.addEventListener("keydown", (e) => {
   let handled = false;
 
@@ -383,7 +406,7 @@ document.addEventListener("keydown", (e) => {
   }
 
   if (handled) {
-    e.preventDefault(); // prevent page scroll on arrows
+    e.preventDefault();
   }
 });
 
@@ -401,6 +424,6 @@ restartBtn.addEventListener("click", () => {
   resetLevel();
 });
 
-// Init
+// --- Init ---
 resetLevel();
 requestAnimationFrame(gameLoop);
