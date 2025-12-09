@@ -11,22 +11,22 @@
   <div id="game-container">
     <h1>Corporate Lolo (Prototype)</h1>
 
-    <!-- GameBoy-style shell -->
+    <!-- Game shell with only the screen -->
     <div id="game-shell">
       <canvas id="gameCanvas" width="480" height="352"></canvas>
+    </div>
 
-      <!-- 🔹 New, more ergonomic controller -->
-      <div id="mobile-controls">
-        <div class="ctrl-row ctrl-row-top">
-          <button class="ctrl-btn" data-dir="up">▲</button>
-        </div>
-        <div class="ctrl-row ctrl-row-middle">
-          <button class="ctrl-btn" data-dir="left">◀</button>
-          <button class="ctrl-btn" data-dir="right">▶</button>
-        </div>
-        <div class="ctrl-row ctrl-row-bottom">
-          <button class="ctrl-btn" data-dir="down">▼</button>
-        </div>
+    <!-- Controls: always BELOW the game, never overlapping -->
+    <div id="mobile-controls">
+      <div class="ctrl-row ctrl-row-top">
+        <button class="ctrl-btn" data-dir="up">▲</button>
+      </div>
+      <div class="ctrl-row ctrl-row-middle">
+        <button class="ctrl-btn" data-dir="left">◀</button>
+        <button class="ctrl-btn" data-dir="right">▶</button>
+      </div>
+      <div class="ctrl-row ctrl-row-bottom">
+        <button class="ctrl-btn" data-dir="down">▼</button>
       </div>
     </div>
 
@@ -37,7 +37,7 @@
     </div>
 
     <p class="hint">
-      PC: Use arrow keys or on-screen buttons. &nbsp;
+      PC: Use arrow keys. &nbsp;
       Mobile: use on-screen buttons.<br />
       Collect all keys, then reach the exit door. Avoid HR.
     </p>
