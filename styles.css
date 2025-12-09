@@ -27,12 +27,11 @@ h1 {
   margin-bottom: 10px;
 }
 
-/* GameBoy-style shell around game + (optional) controller */
+/* Shell around game screen */
 #game-shell {
   margin: 0 auto;
   width: 100%;
   max-width: 480px;
-
   padding: 12px;
   border-radius: 16px;
   border: 3px solid #3a3a3a;
@@ -40,7 +39,7 @@ h1 {
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.5);
 }
 
-/* Canvas scales but keeps pixel look */
+/* Canvas */
 #gameCanvas {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -52,11 +51,10 @@ h1 {
   background: #000;
 }
 
-/* --- CONTROLLER --- */
+/* --- CONTROLLER BLOCK (always below game, never overlapping) --- */
 
-/* Default: shown (for phones), sits UNDER canvas, no overlay */
 #mobile-controls {
-  margin: 12px auto 4px;
+  margin: 10px auto 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,11 +80,6 @@ h1 {
   margin-bottom: 8px;
 }
 
-.ctrl-row-bottom {
-  margin-top: 0;
-}
-
-/* Slightly smaller but comfy buttons */
 .ctrl-btn {
   width: 56px;
   height: 56px;
@@ -104,7 +97,7 @@ h1 {
   transform: scale(0.95);
 }
 
-/* UI and message area */
+/* UI below everything */
 #ui {
   margin-top: 8px;
   display: flex;
@@ -153,28 +146,11 @@ button:active {
   color: #b0bec5;
 }
 
-/* --- RESPONSIVE BEHAVIOUR --- */
-
-/* On very small phones: slightly adjust padding */
+/* Tiny phones: slightly smaller buttons */
 @media (max-width: 400px) {
-  #game-shell {
-    padding: 10px;
-  }
-
   .ctrl-btn {
-    width: 52px;
-    height: 52px;
+    width: 50px;
+    height: 50px;
     font-size: 1.3rem;
-  }
-}
-
-/* On laptops / desktops: HIDE controller completely */
-@media (min-width: 900px) {
-  #mobile-controls {
-    display: none;
-  }
-
-  #game-shell {
-    padding-bottom: 12px; /* no extra space when pad is hidden */
   }
 }
