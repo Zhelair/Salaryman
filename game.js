@@ -58,14 +58,14 @@ const START_MESSAGES = [
 ];
 
 const KEY_MESSAGES = [
-  "You collected a key. Completion rate +10%.",
-  "Key acquired. Your KPI dashboard is impressed.",
-  "New access granted. Please pretend you read the policy."
+  "Key collected. One step closer to escaping open space.",
+  "Key added. Your 'find-exit' project moved to the next milestone.",
+  "You picked a key. Finally, progress that isn't a meeting."
 ];
 
 const ALL_KEYS_MESSAGES = [
   "All objectives completed. Exit interview unlocked.",
-  "All keys collected. Performance review door is now open.",
+  "All keys collected. Your 'escape plan' dashboard is now green.",
   "Checklist: 100% done. Time to find the nearest exit."
 ];
 
@@ -90,7 +90,8 @@ const WIN_MESSAGES = [
   "Corporate congratulates you with a generic email. You escaped!"
 ];
 
-function showMessage(text, duration = 2500) {
+function showMessage(text, duration = 6500) {
+  // default ~6.5 seconds
   messageEl.textContent = text;
   if (messageTimeoutId) clearTimeout(messageTimeoutId);
   if (duration > 0) {
@@ -101,7 +102,8 @@ function showMessage(text, duration = 2500) {
 }
 
 function updateStatus() {
-  statusEl.textContent = `Keys: ${keysCollected}/${totalKeys}`;
+  // clearer label
+  statusEl.textContent = `Keys collected: ${keysCollected}/${totalKeys}`;
 }
 
 function resetLevel() {
@@ -141,7 +143,8 @@ function resetLevel() {
   }
 
   updateStatus();
-  showMessage(rand(START_MESSAGES), 3000);
+  // ~7 seconds intro message
+  showMessage(rand(START_MESSAGES), 7000);
 }
 
 function isInsideGrid(x, y) {
@@ -222,23 +225,23 @@ function tryMovePlayer(dx, dy) {
     key.collected = true;
     keysCollected++;
     updateStatus();
-    showMessage(rand(KEY_MESSAGES));
+    showMessage(rand(KEY_MESSAGES)); // defaults to ~6.5 sec
 
     if (keysCollected === totalKeys) {
       door.open = true;
-      showMessage(rand(ALL_KEYS_MESSAGES), 3000);
+      showMessage(rand(ALL_KEYS_MESSAGES), 7000);
     }
   }
 }
 
 function handleDeath() {
-  showMessage(rand(DEATH_MESSAGES), 3500);
+  showMessage(rand(DEATH_MESSAGES), 7500);
   // small delay so player sees where they died
   setTimeout(resetLevel, 400);
 }
 
 function handleWin() {
-  showMessage(rand(WIN_MESSAGES), 4000);
+  showMessage(rand(WIN_MESSAGES), 8000);
   // For now just reset same level
   setTimeout(resetLevel, 1200);
 }
