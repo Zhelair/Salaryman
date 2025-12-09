@@ -21,26 +21,80 @@ body {
   width: 100%;
 }
 
+/* Title */
 h1 {
   font-size: 1.4rem;
   margin-bottom: 10px;
 }
 
+/* 🔹 GameBoy-style shell around game + controller */
+#game-shell {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 480px;
+
+  padding: 12px 12px 96px; /* extra bottom space for controller */
+  border-radius: 16px;
+  border: 3px solid #3a3a3a;
+  background: #151c26;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.5);
+}
+
+/* Canvas scales but keeps pixel look */
 #gameCanvas {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  border: 3px solid #3a3a3a;
-  border-radius: 8px;
-  background: #000;
+  width: 100%;
+  height: auto;
   display: block;
   margin: 0 auto;
-
-  /* 🔹 responsive scaling */
-  width: 100%;
-  max-width: 480px;
-  height: auto;
+  border-radius: 8px;
+  background: #000;
 }
 
+/* 🔹 Controller is fixed inside the shell, bottom center */
+#mobile-controls {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #202733;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.ctrl-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ctrl-spacer {
+  width: 48px;
+  height: 48px;
+}
+
+.ctrl-btn {
+  width: 48px;
+  height: 48px;
+  margin: 2px;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 10px;
+  background: #1e88e5;
+  color: #fff;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.ctrl-btn:active {
+  transform: scale(0.95);
+}
+
+/* UI and message area */
 #ui {
   margin-top: 8px;
   display: flex;
@@ -51,7 +105,6 @@ h1 {
 }
 
 #message {
-  /* fixed height so layout doesn't jump */
   min-height: 40px;
   max-height: 40px;
   overflow: hidden;
@@ -62,7 +115,6 @@ h1 {
 }
 
 #status {
-  /* fixed height for the status line too */
   min-height: 20px;
   max-height: 20px;
   overflow: hidden;
@@ -85,34 +137,21 @@ button:active {
   transform: scale(0.96);
 }
 
-#mobile-controls {
-  margin-top: 10px;
-  display: none; /* shown on small screens */
-}
-
-#mobile-controls .row {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 4px;
-}
-
-.ctrl-btn {
-  width: 52px;
-  height: 52px;
-  font-size: 1.4rem;
-  margin: 0 4px;
-  touch-action: manipulation;
-}
-
 .hint {
   margin-top: 8px;
   font-size: 0.8rem;
   color: #b0bec5;
 }
 
-/* Show mobile controls on narrow screens */
-@media (max-width: 768px) {
-  #mobile-controls {
-    display: block;
+/* Slightly smaller shell on very narrow phones */
+@media (max-width: 400px) {
+  #game-shell {
+    padding: 8px 8px 90px;
+  }
+
+  .ctrl-btn,
+  .ctrl-spacer {
+    width: 42px;
+    height: 42px;
   }
 }
