@@ -27,14 +27,13 @@ h1 {
   margin-bottom: 10px;
 }
 
-/* GameBoy-style shell around game + controller */
+/* GameBoy-style shell around game + (optional) controller */
 #game-shell {
-  position: relative;
   margin: 0 auto;
   width: 100%;
   max-width: 480px;
 
-  padding: 12px 12px 140px; /* extra bottom space for BIG controller */
+  padding: 12px;
   border-radius: 16px;
   border: 3px solid #3a3a3a;
   background: #151c26;
@@ -53,14 +52,17 @@ h1 {
   background: #000;
 }
 
-/* Controller fixed inside shell, bottom center */
+/* --- CONTROLLER --- */
+
+/* Default: shown (for phones), sits UNDER canvas, no overlay */
 #mobile-controls {
-  position: absolute;
-  left: 50%;
-  bottom: 12px;
-  transform: translateX(-50%);
-  display: inline-block;
-  padding: 10px 14px;
+  margin: 12px auto 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 12px;
   border-radius: 24px;
   background: #202733;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
@@ -72,25 +74,24 @@ h1 {
   align-items: center;
 }
 
-/* extra spacing between rows so Up/Down aren't glued */
 .ctrl-row-top {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .ctrl-row-middle {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .ctrl-row-bottom {
   margin-top: 0;
 }
 
-/* BIGGER buttons */
+/* Slightly smaller but comfy buttons */
 .ctrl-btn {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   margin: 0 6px;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   border: none;
   border-radius: 14px;
   background: #1e88e5;
@@ -147,20 +148,33 @@ button:active {
 }
 
 .hint {
-  margin-top: 8px;
+  margin-top: 6px;
   font-size: 0.8rem;
   color: #b0bec5;
 }
 
-/* Slightly smaller shell + buttons on tiny phones */
+/* --- RESPONSIVE BEHAVIOUR --- */
+
+/* On very small phones: slightly adjust padding */
 @media (max-width: 400px) {
   #game-shell {
-    padding: 8px 8px 130px;
+    padding: 10px;
   }
 
   .ctrl-btn {
-    width: 56px;
-    height: 56px;
-    font-size: 1.4rem;
+    width: 52px;
+    height: 52px;
+    font-size: 1.3rem;
+  }
+}
+
+/* On laptops / desktops: HIDE controller completely */
+@media (min-width: 900px) {
+  #mobile-controls {
+    display: none;
+  }
+
+  #game-shell {
+    padding-bottom: 12px; /* no extra space when pad is hidden */
   }
 }
